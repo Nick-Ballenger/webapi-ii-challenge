@@ -40,73 +40,74 @@ router.get('/:id', async (req, res) => {
     });
   }
 });
+
+//Add Post
+
 router.post('/', async (req, res) => {
     const {
       title,
       contents
     } = req.body;
+    
     if (title && contents) {
-      try {
+      
+        try {
         const post = await Posts.insert({
           title,
           contents
         });
+       
         res.status(201).json(post);
-      } catch (error) {
+        
+      } 
+      
+      catch (error) {
         console.log(error);
         res.status(500).json({
           error: "There was an error while saving the post to the database"
         })
       }
-    } else {
+    } 
+    
+    else {
       res.status(400).json({
-        errorMessage: "Please provide title and contents for the post."
+        errorMessage: "One does not simply 'Add a post', Please provide title and contents for the post."
       });
     }
   });
   
-  router.delete('/:id', async (req, res) => {
-    try{
-      const post = await Posts.remove(req.params.id);
-      console.log(post);
-      if(post > 0){
-        res.status(200).json({message: "post deleted"})
-      }
-      else {
-        res.status(404).json({ message: "The post with the specified ID does not exist." });
-      }
-  
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "The post could not be removed" });
-    }
-  });
-  
+  //Update User by ID
+
   router.put('/:id', async (req, res) => {
     const {
       title,
       contents
     } = req.body;
+    
     if (title && contents) {
-      try {
+      
+        try {
         const post = await Posts.update(req.params.id, {title, contents});
         if (post > 0){
           res.status(200).json(post);
         }
+
         else {
-          res.status(404).json({ message: "The post with the specified ID does not exist." });
+          res.status(404).json({ message: "This is not the post you're looking for. The post with the specified ID does not exist." });
         }
+
       } catch (error) {
         console.log(error);
         res.status(500).json({
-          error: "The post information could not be modified."
+          error: " The post information could not be modified."
         })
       }
     } else {
-      res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+      res.status(400).json({ errorMessage: "One does not simply 'Update a post', Please provide title and contents for the post." })
     }
   
   });
 
+  
 
 module.exports = router;
