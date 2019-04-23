@@ -1,18 +1,17 @@
 const express = require('express');
 
-const RouterPosts = require('./');
+const PostRouter = require('./data/router.js')
 
 const server = express();
 
-server.use(express.json())
+server.use(express.json());
 
-server.use('/api/posts', RouterPosts)
-
-//test
 server.get('/', (req, res) => {
-    res.send(`
-    <h2> LOTR trivia </h2>
-    `)
-})
+  res.send(`
+  <h1>LOTR Trivia</h1>
+  `);
+});
 
-module.exports = server
+server.use('/api/posts', PostRouter);
+
+module.exports = server;
