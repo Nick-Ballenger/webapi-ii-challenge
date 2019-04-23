@@ -6,10 +6,13 @@ const router = express.Router();
 //Get Users
 
 router.get('/', async (req, res) => {
-  try {
+  
+    try {
     const posts = await Posts.find();
     res.status(200).json(posts);
-  } catch (error) {
+  } 
+  
+  catch (error) {
     console.log(error);
     res.status(500).json({
       error: "The posts information could not be retrieved."
@@ -106,6 +109,30 @@ router.post('/', async (req, res) => {
       res.status(400).json({ errorMessage: "One does not simply 'Update a post', Please provide title and contents for the post." })
     }
   
+  });
+
+//Delete Post by ID
+
+  router.delete('/:id', async (req, res) => {
+    
+    try{
+      const post = await Posts.remove(req.params.id);
+      console.log(post);
+      
+      if(post > 0){
+        res.status(200).json({message: "post deleted"})
+      }
+      
+      else {
+        res.status(404).json({ message: "This is not the post you're looking for. The post with the specified ID does not exist." });
+      }
+  
+    } 
+    
+    catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "The post could not be removed" });
+    }
   });
 
   
